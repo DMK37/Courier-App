@@ -1,5 +1,7 @@
 # Project description
 
+# Project in development
+
 The team working on this project will create a **Courier Hub** that will give the option of requesting couriers from various sources/companies. The client of that app can use WebSite to interact with the system. 
 
 The **Landing page** should have some information about the system, like how many people use it, its name, some short descriptions, and a button for creating it anonymously for delivery request inquiries. 
@@ -24,7 +26,7 @@ Be aware that you need to create an API that will be used by different teams and
 # Requirements 
 ## Overall
 - Web UI (App) for Courier Hub app
-- Can register using AzureAD or other OpenId (Google, Facebook, custom)
+- Can register using Auth0
 - When registered, need to provide some additional information:
   - First Name
   - Last Name
