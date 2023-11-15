@@ -88,9 +88,6 @@ Be aware that you need to create an API that will be used by different teams and
 
 ### Front-end
 - React
-- Responsive
-- Using AJAX
-- Consistent
 - Host on Azure
 
 ### Back-end
