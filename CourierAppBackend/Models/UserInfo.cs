@@ -1,20 +1,15 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+
 namespace CourierAppBackend.Models;
 
-public enum Role
+public class UserInfo
 {
-    User,
-    OfficeWorker,
-    Courier
-}
-public class User : Base
-{
+    [Key] public string UserId { get; set; } = null!;
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;
+    public string CompanyName { get; set; } = null!;
     public string Email { get; set; } = null!;
-    public string Password { get; set; } = null!;
     public Address Address { get; set; } = null!;
     public Address DefaultSourceAddress { get; set; } = null!;
-    public Role Role { get; set; }
-    public ICollection<Inquiry>? Inquiries { get; set; }
 }

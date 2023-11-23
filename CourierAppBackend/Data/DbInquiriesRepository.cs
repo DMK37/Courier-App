@@ -1,4 +1,5 @@
 using CourierAppBackend.Abstractions;
+using CourierAppBackend.DtoModels;
 using CourierAppBackend.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,10 +15,10 @@ public class DbInquiriesRepository : IInquiriesRepository
         _addressesRepository = addressesRepository;
     }
 
-    public List<Inquiry> GetLastInquiries(int userId)
+    public List<Inquiry> GetLastInquiries(string userId)
     {
         var inquiries = (from i in _context.Inquiries
-                         where i.ID == userId && (DateTime.UtcNow - i.DateOfInquiring).Days < 30
+                         where i.UserId == userId && (DateTime.UtcNow - i.DateOfInquiring).Days < 30
                          select i)
             .Include(i => i.SourceAddress)
             .Include(i => i.DestinationAddress)
@@ -37,21 +38,39 @@ public class DbInquiriesRepository : IInquiriesRepository
         var result = _context.Inquiries
             .Include(x => x.SourceAddress)
             .Include(x => x.DestinationAddress)
-            .FirstOrDefault(x => x.ID == id);
+            .FirstOrDefault(x => x.Id == id);
         return result!;
     }
 
-    public Inquiry CreateInquiry(Inquiry inquiry)
+    public Inquiry CreateInquiry(CreateInquiry inquiry)
     {
-        if (inquiry is null)
-            return inquiry!;
-
-        inquiry.DateOfInquiring = DateTime.UtcNow;
-        inquiry.SourceAddress = _addressesRepository.FindOrAddAddress(inquiry.SourceAddress);
+        /*if (inquiry is null)
+            return inquiry!;*/
+        Inquiry inq = new Inquiry
+        {
+            DateOfInquiring = DateTime.UtcNow,
+            SourceAddress = _addressesRepository.FindOrAddAddress(inquiry.SourceAddress),
+            DestinationAddress = _addressesRepository.FindOrAddAddress(inquiry.DestinationAddress),
+            Package = new Package
+            {
+                Height = inquiry.Package.Height,
+                Width = inquiry.Package.Width,
+                Length = inquiry.Package.Length,
+                Weight = inquiry.Package.Weight
+            },
+            IsCompany = inquiry.IsCompany,
+            HighPriority = inquiry.HighPriority,
+            DeliveryAtWeekend = inquiry.DeliveryAtWeekend,
+            PickupDate = inquiry.PickupDate,
+            DeliveryDate = inquiry.DeliveryDate,
+            UserId = inquiry.UserId
+        };
+        //inquiry = DateTime.UtcNow;
+        //inquiry.SourceAddress = _addressesRepository.FindOrAddAddress(inquiry.SourceAddress);
         inquiry.DestinationAddress = _addressesRepository.FindOrAddAddress(inquiry.DestinationAddress);
 
-        _context.Add(inquiry);
+        _context.Add(inq);
         _context.SaveChanges();
-        return inquiry;
+        return inq;
     }
 }

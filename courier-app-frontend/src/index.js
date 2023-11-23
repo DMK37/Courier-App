@@ -1,28 +1,22 @@
 import React from "react";
-
+import { BrowserRouter } from "react-router-dom";
 import { createRoot } from "react-dom/client";
-import { Auth0Provider } from "@auth0/auth0-react";
 
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import CourierApp from "./CourierApp";
+import { Auth0ProviderWithNavigate } from "./auth/auth0-provider-with-navigate";
 
-const root = createRoot(document.getElementById("root"));
-
+const container = document.getElementById("root");
+const root = createRoot(container);
 root.render(
-  <Auth0Provider
-    domain="dev-6n1xot3k0d7iu4hw.us.auth0.com"
-    clientId="gZHiwdqnkt1xKkIrP9GANbeMICFI9A8l"
-    authorizationParams={{
-      redirect_uri: "http://localhost:3000/fill-signup",
-    }}
-    useRefreshTokens
-    cacheLocation="localstorage"
-  >
-    <React.StrictMode>
-      <CourierApp />
-    </React.StrictMode>
-  </Auth0Provider>
+  <React.StrictMode>
+    <BrowserRouter>
+      <Auth0ProviderWithNavigate>
+        <CourierApp />
+      </Auth0ProviderWithNavigate>
+    </BrowserRouter>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
